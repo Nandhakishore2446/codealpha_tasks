@@ -1,0 +1,56 @@
+# Predefined stock prices
+stock_prices = {
+    "AAPL": 188,
+    "TSLA": 250,
+    "GOOGL": 2800,
+    "AMZN": 3500,
+    "MSFT": 330
+}
+
+# Dictionary to hold user input
+user_stocks = {}
+
+print("📈 Welcome to the Stock Tracker!")
+print("Enter stock symbol and quantity (type 'done' to finish):")
+
+# Taking user input
+while True:
+    stock = input("Enter stock symbol: ").upper()
+    if stock == 'DONE':
+        break
+    if stock not in stock_prices:
+        print("❌ Stock not found in price list.")
+        continue
+    try:
+        quantity = int(input(f"Enter quantity of {stock}: "))
+        user_stocks[stock] = user_stocks.get(stock, 0) + quantity
+    except ValueError:
+        print("⚠ Please enter a valid number.")
+
+# Calculate total investment
+total_investment = 0
+output_lines = []
+output_lines.append("Stock\tQuantity\tPrice\tTotal\n")
+
+for stock, quantity in user_stocks.items():
+    price = stock_prices[stock]
+    total = price * quantity
+    total_investment += total
+    output_lines.append(f"{stock}\t{quantity}\t\t${price}\t${total}\n")
+
+output_lines.append(f"\nTotal Investment: ${total_investment}\n")
+
+# Display result
+print("\n📊 Investment Summary:")
+print("".join(output_lines))
+
+# Optional: Save to file
+save = input("Do you want to save the result to a file? (yes/no): ").lower()
+if save == "yes":
+    filename = input("Enter filename (with .txt or .csv): ")
+    try:
+        with open(filename, 'w') as f:
+            f.writelines(output_lines)
+        print(f"✅ Data saved to {filename}")
+    except:
+        print("⚠ Failed to write to file.")
